@@ -21,18 +21,21 @@ export default function Home() {
   };
 
   const loadData = async () => {
-    try {
-      const response = await fetch("http://localhost:5000/api/foods");
+  try {
+    const response = await fetch("/api/foods");
 
-      const data = await response.json();
-
-      console.log(data);
-
-      setFoodItems(data);
-    } catch (error) {
-      console.log("Error fetching foods:", error);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch foods: ${response.status}`);
     }
-  };
+
+    const data = await response.json();
+
+    console.log("Foods received:", data);
+    setFoodItems(data);
+  } catch (error) {
+    console.error("Error fetching foods:", error);
+  }
+};
 
   useEffect(() => {
     loadData();
