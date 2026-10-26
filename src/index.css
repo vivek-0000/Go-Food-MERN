@@ -5,9 +5,21 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-family: 'NHaasGroteskDSPro-65Md' !important;
 }
-
+.logo {
+    font-family: 'NHaasGroteskDSPro-65Md', sans-serif;
+    font-weight: 900 !important;
+    font-style: italic;
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+#Carousel{
+  max-height: 500px;
+
+}
+.btn-outline-success {
+  transition: all 0.3s ease;
 }
