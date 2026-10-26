@@ -5,7 +5,7 @@ const { body, validationResult } = require("express-validator");
 
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const jwtsecrest = "maathapithamamitha";
+const jwtsecrest = process.env.JWT_SECRET;
 
 router.post(
   "/Loginuser",
