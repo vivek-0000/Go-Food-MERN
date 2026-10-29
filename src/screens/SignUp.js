@@ -24,7 +24,7 @@ export default function SignUp() {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/createuser",
+        "/api/createuser",
         {
           method: "POST",
           headers: {

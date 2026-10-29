@@ -17,7 +17,7 @@ export default function MyOrder() {
       }
 
       const response = await fetch(
-        "http://localhost:5000/api/auth/myorderdata",
+        "/api/auth/myorderdata",
         {
           method: "POST",
           headers: {
