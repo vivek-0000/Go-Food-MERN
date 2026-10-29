@@ -47,6 +47,7 @@ router.post(
   },
 );
 
+
 router.post(
   "/createuser",
   [
@@ -56,45 +57,58 @@ router.post(
   ],
   async (req, res) => {
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-    // Check whether the email already exists
-    const existingUser = await User.findOne({ email });
 
-    if (existingUser) {
-      return res.status(409).json({
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
         success: false,
-        message: "User already exists. Please log in.",
+        errors: errors.array(),
       });
     }
-    const salt = await bcrypt.genSalt(10);
-    let secPass = await bcrypt.hash(req.body.password, salt);
+
     try {
+      const email = req.body.email.trim().toLowerCase();
+
+      const existingUser = await User.findOne({ email });
+
+      if (existingUser) {
+        return res.status(409).json({
+          success: false,
+          message: "User already exists. Please log in.",
+        });
+      }
+
+      const salt = await bcrypt.genSalt(10);
+      const secPass = await bcrypt.hash(req.body.password, salt);
+
       await User.create({
-        name: req.body.name,
-        email: req.body.email,
+        name: req.body.name.trim(),
+        email,
         password: secPass,
         location: req.body.location,
       });
-      res.json({ success: true });
+
+      return res.status(201).json({
+        success: true,
+        message: "Registration successful!",
+      });
     } catch (error) {
-      console.log(error);
-      // Handle duplicate email errors from MongoDB
+      console.error("Signup error:", error);
+
       if (error.code === 11000) {
         return res.status(409).json({
           success: false,
           message: "User already exists. Please log in.",
         });
       }
-      // Handle other errors
-    return res.status(500).json({
+
+      return res.status(500).json({
         success: false,
         message: "Something went wrong during signup.",
-    });
+      });
     }
-  },
+  }
 );
+
 router.get("/users", async (req, res) => {
   try {
     const users = await User.find().select("-password");
